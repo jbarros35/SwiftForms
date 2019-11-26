@@ -35,6 +35,7 @@ public final class FormRowDescriptor {
         case date
         case time
         case dateAndTime
+        case countDownTimer
         case stepper
         case slider
         case multipleSelector
@@ -101,6 +102,8 @@ public final class FormRowDescriptor {
     
     public struct DateConfiguration {
         public var dateFormatter: DateFormatter?
+        public var countDownDuration: Double?
+        public var minuteInterval: Int?
     }
     
     public struct RowConfiguration {

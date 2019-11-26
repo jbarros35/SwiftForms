@@ -32,6 +32,7 @@ open class FormViewController : UITableViewController {
             FormViewController.defaultCellClasses[.date] = FormDateCell.self
             FormViewController.defaultCellClasses[.time] = FormDateCell.self
             FormViewController.defaultCellClasses[.dateAndTime] = FormDateCell.self
+            FormViewController.defaultCellClasses[.countDownTimer] = FormDateCell.self
             FormViewController.defaultCellClasses[.stepper] = FormStepperCell.self
             FormViewController.defaultCellClasses[.slider] = FormSliderCell.self
             FormViewController.defaultCellClasses[.multipleSelector] = FormSelectorCell.self
