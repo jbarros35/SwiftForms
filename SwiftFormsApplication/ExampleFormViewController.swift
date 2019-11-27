@@ -31,6 +31,7 @@ class ExampleFormViewController: FormViewController {
         static let stepper = "stepper"
         static let slider = "slider"
         static let textView = "textview"
+        static let countDown = "countDown"
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -153,6 +154,10 @@ class ExampleFormViewController: FormViewController {
         section5.rows.append(row)
 
         row = FormRowDescriptor(tag: Static.birthday, type: .date, title: "Birthday")
+        row.configuration.cell.showsInputToolbar = true
+        section5.rows.append(row)
+        
+        row = FormRowDescriptor(tag: Static.countDown, type: .countDownTimer, title: "Count Down")
         row.configuration.cell.showsInputToolbar = true
         section5.rows.append(row)
         

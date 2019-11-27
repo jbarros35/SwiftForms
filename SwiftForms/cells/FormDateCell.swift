@@ -32,7 +32,6 @@ open class FormDateCell: FormValueCell {
             hiddenTextField.inputAccessoryView = inputAccesoryView()
         }
         titleLabel.text = rowDescriptor?.title
-        let dateConfiguration = rowDescriptor?.configuration.date
         if let rowType = rowDescriptor?.type {
             switch rowType {
             case .date:
@@ -43,13 +42,6 @@ open class FormDateCell: FormValueCell {
                 datePicker.datePickerMode = .time
                 defaultDateFormatter.dateStyle = .none
                 defaultDateFormatter.timeStyle = .short
-            case .countDownTimer:
-                datePicker.datePickerMode = .countDownTimer
-                datePicker.countDownDuration = TimeInterval(dateConfiguration?.countDownDuration ?? 60)
-                datePicker.minuteInterval = dateConfiguration?.minuteInterval ?? 15
-                defaultDateFormatter.dateStyle = .short
-                defaultDateFormatter.timeStyle = .short
-                return
             default:
                 datePicker.datePickerMode = .dateAndTime
                 defaultDateFormatter.dateStyle = .long
@@ -70,10 +62,7 @@ open class FormDateCell: FormValueCell {
         guard let row = selectedRow as? FormDateCell else { preconditionFailure("Type was not configured properly") }
         
         if row.rowDescriptor?.value == nil {
-            var date = Date()
-            if let minuteInterval = row.rowDescriptor?.configuration.date.minuteInterval {
-                date = Date().addingTimeInterval(TimeInterval(minuteInterval * 60))
-            }
+            let date = Date()
             row.rowDescriptor?.value = date as AnyObject
             row.valueLabel.text = row.getDateFormatter().string(from: date)
             row.update()
