@@ -29,6 +29,11 @@ class CountDownCell: FormValueCell {
             hiddenTextField.inputAccessoryView = inputAccesoryView()
         }
         titleLabel.text = rowDescriptor?.title
+        if let timeInterval = rowDescriptor?.value as? TimeInterval {
+            // datePicker.date = date
+            valueLabel.text = CountDownCell.stringFromTimeInterval(timeInterval)
+            print(timeInterval)
+        }
     }
     
     override class func formRowCellHeight() -> CGFloat {
@@ -40,8 +45,8 @@ class CountDownCell: FormValueCell {
     /// - Parameter sender: <#sender description#>
     @objc internal func valueChanged(_ sender: UIDatePicker) {
         rowDescriptor?.value = sender.countDownDuration as AnyObject
-        let addedTime = Date().addingTimeInterval(sender.countDownDuration)
-        valueLabel.text = defaultDateFormatter.string(from: addedTime)
+        let addedTime = CountDownCell.stringFromTimeInterval(sender.countDownDuration)
+        valueLabel.text = addedTime
         update()
     }
         
@@ -49,12 +54,27 @@ class CountDownCell: FormValueCell {
        guard let row = selectedRow as? CountDownCell else { preconditionFailure("Type was not configured properly") }
         
         if row.rowDescriptor?.value == nil {
-            let date = Date()
-            row.rowDescriptor?.value = date as AnyObject
-            row.valueLabel.text = row.defaultDateFormatter.string(from: date)
+            row.rowDescriptor?.value = 0.0 as AnyObject
+            row.valueLabel.text = CountDownCell.stringFromTimeInterval(0.0)
+            row.update()
+        } else {
+            guard let currentValue = row.rowDescriptor?.value as? TimeInterval else {
+                return
+            }
+            row.valueLabel.text = CountDownCell.stringFromTimeInterval(currentValue)
             row.update()
         }
         row.hiddenTextField.becomeFirstResponder()
+    }
+    
+    /// <#Description#>
+    /// - Parameter interval: <#interval description#>
+    fileprivate static func stringFromTimeInterval(_ interval: TimeInterval) -> String {
+        let ti = NSInteger(interval)
+        let seconds = ti % 60
+        let minutes = (ti / 60) % 60
+        let hours = (ti / 3600)
+        return String(format: "%0.2d:%0.2d:%0.2d",hours,minutes,seconds)
     }
     
     open override func firstResponderElement() -> UIResponder? {
